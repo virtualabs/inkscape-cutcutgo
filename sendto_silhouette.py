@@ -49,7 +49,9 @@ from gettext import gettext
 from optparse import SUPPRESS_HELP
 from tempfile import NamedTemporaryFile, gettempdir
 
-from silhouette.Graphtec import SilhouetteCameo, CAMEO_MATS
+#from silhouette.Graphtec import SilhouetteCameo, CAMEO_MATS
+from silhouette.Graphtec import CAMEO_MATS
+from silhouette.Cutcutgo import CricutMaker as SilhouetteCameo
 from silhouette.Strategy import MatFree
 from silhouette.convert2dashes import convert2dash
 import silhouette.StrategyMinTraveling
