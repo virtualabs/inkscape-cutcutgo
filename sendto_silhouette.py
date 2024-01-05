@@ -226,7 +226,7 @@ class SendtoSilhouette(EffectExtension):
         pars.add_argument("-t", "--tool",
                 choices=("autoblade", "cut", "pen", "default"), dest = "tool", default = None, help="Optimize for pen or knive")
         pars.add_argument("-T", "--toolholder",
-                choices=("1", "2"), dest = "toolholder", default = None, help="[1..2]")
+                choices=("0", "1"), dest = "toolholder", default = None, help="[0..1]")
         pars.add_argument("--preview",
                 dest = "preview", type = Boolean, default = True,
                 help="show cut pattern graphically before sending")

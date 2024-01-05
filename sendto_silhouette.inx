@@ -17,8 +17,8 @@
         <option value="no_mat">None</option>
       </param>
       <param name="toolholder" type="optiongroup" appearance="combo" gui-text="Tool Holder">
-        <option value="1">Red (left tool)</option>
-        <option value="2">Blue (right tool)</option>
+        <option value="0">Red (left tool)</option>
+        <option value="1">Blue (right tool)</option>
       </param>
       <param name="tool" type="optiongroup" appearance="combo" gui-text="Tool">
         <option value="default">Media default</option>
