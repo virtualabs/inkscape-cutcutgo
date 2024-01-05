@@ -213,7 +213,7 @@ class CricutMaker:
     except:
       pass
     return ret
-  
+
   def send_receive_command(self, cmds, tx_timeout=10000, rx_timeout=20000, special=False):
     if not isinstance(cmds, list):
       if special:
@@ -232,10 +232,10 @@ class CricutMaker:
       """ Sends a query and returns its response as a string """
       if special:
         self.send_special_command(cmd, timeout=tx_timeout)
-        print(cmd)
+        print(cmd, file=self.log)
       else:
         self.send_command(cmd, is_query=True, timeout=tx_timeout)
-        print(cmd)
+        print(cmd, file=self.log)
 
       try:
         resp = self.read(timeout=rx_timeout)
@@ -269,18 +269,18 @@ class CricutMaker:
   def move_mm_cmd(self, mmy, mmx):
     """ Raise tool and move """
     if self.tool_up:
-      return [b"G01X%dY%dF10" % (mmx, mmy)]
+      return [b"G01X%fY%fF10" % (mmx, mmy)]
     else:
       self.tool_up = True
-      return [b"G01Z0F10", b"G01X%dY%dF10" % (mmx, mmy)]
+      return [b"G01Z0F10", b"G01X%fY%fF10" % (mmx, mmy)]
 
   def draw_mm_cmd(self, mmy, mmx):
     """ Lower tool (if not lowered) and cut """
     if self.tool_up:
-      self.tool_up = False
-      return [b"G01Z-10F10", b"G01X%dY%dF10" % (mmx, mmy)]
+      self.tool_up = False 
+      return [b"G01Z-10F10", b"G01X%fY%fF10" % (mmx, mmy)]
     else:
-      return [b"G01X%dY%dF10" % (mmx, mmy)]
+      return [b"G01X%fY%fF10" % (mmx, mmy)]
 
   def upper_left_mm_cmd(self, mmy, mmx):
     """" Not supported yet """
