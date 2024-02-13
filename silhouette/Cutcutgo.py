@@ -228,20 +228,29 @@ class CricutMaker:
       else:
         cmds = [cmds]
 
+    msg = ''
+    o = 0
     for cmd in cmds:
       """ Sends a query and returns its response as a string """
       if special:
         self.send_special_command(cmd, timeout=tx_timeout)
-        print(cmd, file=self.log)
       else:
         self.send_command(cmd, is_query=True, timeout=tx_timeout)
-        print(cmd, file=self.log)
 
       try:
         resp = self.read(timeout=rx_timeout)
-        print('-> %s' % resp)
       except:
+        msg += 't'
         pass
+      else:
+        msg = ''
+        self.log.write("\n")
+      
+      if self.progress_cb:
+          self.progress_cb(o,len(cmds), msg)
+      elif self.log:
+        self.log.write(" %d%% %s\r" % (100.*o/len(cmds),msg))
+        self.log.flush()
 
     return None
 
@@ -484,11 +493,19 @@ class CricutMaker:
     if not 'lly' in bbox: bbox['lly'] = 0
     if not 'urx' in bbox: bbox['urx'] = 0
     if not 'ury' in bbox: bbox['ury'] = 0
+
+    """
     if endposition == 'start':
         new_home = b"$H"
     else: #includes 'below'
       new_home = self.move_mm_cmd(bbox['lly'] + end_paper_offset, 0)
     self.send_receive_command(new_home)
+    """
+    new_home = [b"G01Z0F10", b"G01Y00F10"]
+    self.send_receive_command(new_home)
+
+
+    # Plotting is finished, raise tool and move to lly
 
     return {
         'bbox': bbox,
