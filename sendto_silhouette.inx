@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension translationdomain="inkscape-silhouette" xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-  <name>Send to Silhouette</name>
-  <id>com.github.fablabnbg.inkscape-silhouette.sendto_silhouette</id>
+  <name>Send to Cricut</name>
+  <id>com.github.fablabnbg.inkscape-silhouette.sendto_cricut</id>
   <dependency type="extension">org.inkscape.output.svg.inkscape</dependency>
   <dependency type="executable" location="inx">sendto_silhouette.py</dependency>
   <param name="active-tab" type="notebook">
@@ -17,8 +17,8 @@
         <option value="no_mat">None</option>
       </param>
       <param name="toolholder" type="optiongroup" appearance="combo" gui-text="Tool Holder">
-        <option value="0">Red (left tool)</option>
-        <option value="1">Blue (right tool)</option>
+        <option value="0">Left tool</option>
+        <option value="1">Right tool</option>
       </param>
       <param name="tool" type="optiongroup" appearance="combo" gui-text="Tool">
         <option value="default">Media default</option>
