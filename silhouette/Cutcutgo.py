@@ -123,9 +123,9 @@ class CricutMaker:
 
     # Enumerate com ports (serial ports)
     ports = list(list_ports.comports())
-    for port, desc, hwid in ports:
-      # Extract VID/PID from hardware info
-      vid_pid = re.search('VID:PID=([a-fA-F0-9]{4}):([a-fA-F0-9]{4})', hwid)
+    for port in ports:
+      # Extract VID/PID from hardware info (should work on Linux and Windows)
+      vid_pid = re.search('VID:PID=([a-fA-F0-9]{4}):([a-fA-F0-9]{4})', port.usb_info())
       if vid_pid is not None:
         vid, pid = map(lambda x: int(x, 16), vid_pid.groups())
 
@@ -134,8 +134,8 @@ class CricutMaker:
           if hardware['vendor_id'] == vid and hardware['product_id'] == pid:
             self.hardware = hardware
             # TODO: handle potential exceptions.
-            dev = Serial(port, baudrate=115200, timeout=5000)
-            dev_port = port
+            dev = Serial(port.device, baudrate=115200, timeout=5000)
+            dev_port = port.device
 
 
       if dev is None:
