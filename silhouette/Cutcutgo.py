@@ -641,7 +641,7 @@ class CricutMaker:
 
     self.initialize()
 
-    self.set_cutting_mat(cuttingmat, mediawidth, mediaheight)
+    #self.set_cutting_mat(cuttingmat, mediawidth, mediaheight)
 
     if media is not None:
       if media < 100 or media > 300: media = 300

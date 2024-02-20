@@ -1,61 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<inkscape-extension translationdomain="inkscape-silhouette" xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+<inkscape-extension translationdomain="inkscape-cutcutgo" xmlns="http://www.inkscape.org/namespace/inkscape/extension">
   <name>Send to Cricut</name>
-  <id>com.github.fablabnbg.inkscape-silhouette.sendto_cricut</id>
+  <id>com.github.fablabnbg.inkscape-cutcutgo.sendto_cricut</id>
   <dependency type="extension">org.inkscape.output.svg.inkscape</dependency>
-  <dependency type="executable" location="inx">sendto_silhouette.py</dependency>
+  <dependency type="executable" location="inx">sendto_cricut.py</dependency>
   <param name="active-tab" type="notebook">
-    <page name='silhouette' translatable="no" gui-text='Silhouette'>
+    <page name='cricut' translatable="no" gui-text='Cricut'>
       <param name="x_off" type="float" min="-999.0" max="999.0" precision="2" translatable="no" gui-text="X-Offset [mm]">0.0</param>
       <param name="y_off" type="float" min="-999.0" max="999.0" precision="2" translatable="no" gui-text="Y-Offset [mm]">0.0</param>
-      <param name="cuttingmat" type="optiongroup" appearance="combo" gui-text="Cutting Mat">
-        <option translatable="no" value="cameo_12x12">Cameo 12x12</option>
-        <option translatable="no" value="cameo_12x24">Cameo 12x24</option>
-        <option translatable="no" value="portrait_8x12">Portrait 8x12</option>
-        <option translatable="no" value="cameo_plus_15x15">Cameo Plus 15x15</option>
-        <option translatable="no" value="cameo_pro_24x24">Cameo Pro 24x24</option>
-        <option value="no_mat">None</option>
-      </param>
-      <param name="toolholder" type="optiongroup" appearance="combo" gui-text="Tool Holder">
-        <option value="0">Left tool</option>
-        <option value="1">Right tool</option>
-      </param>
       <param name="tool" type="optiongroup" appearance="combo" gui-text="Tool">
-        <option value="default">Media default</option>
         <option value="pen">Pen</option>
-        <option value="cut">Cut</option>
-        <option value="autoblade">AutoBlade</option>
+        <option value="blade">Fine-point Blade</option>
       </param>
       <label indent="2">'pen' executes the strokes exactly as sent, 'cut' adds small serifs to help the knive find its orientation at corners.</label>
       <!-- CAUTION: keep media list in sync with silhouette/Graphtec.py -->
       <param name="media" type="optiongroup" appearance="combo" gui-text="Media">
         <option value="300">[P>0 S>0] Custom: use non-zero Pressure and Speed below</option>
-        <option value="100">[P=27,S=10] SCard without Craft Paper Backing</option>
-        <option value="101">[P=27,S=10] Card with Craft Paper Backing</option>
-        <option value="102">[P=10,S= 5,D=1] Vinyl Sticker</option>
-        <option value="106">[P=14,S=10] Film Labels</option>
-        <option value="111">[P=27,S=10] Thick Media</option>
-        <option value="112">[P= 2,S=10] Thin Media</option>
-        <option value="113">[P=18,S=10] Pen</option>
-        <option value="120">[P=30,S=10] Bond Paper 13-28 lbs (105g)</option>
-        <option value="121">[P=30,S=10] Bristol Paper 57-67 lbs (145g)</option>
-        <option value="122">[P=30,S=10] Cardstock 40-60 lbs (90g)</option>
-        <option value="123">[P=30,S=10] Cover 40-60 lbs (170g)</option>
-        <option value="124">[P= 1,S=10] Film, Double Matte Translucent</option>
-        <option value="125">[P= 1,S=10] Film, Vinyl With Adhesive Back</option>
-        <option value="126">[P= 1,S=10] Film, Window With Kling Adhesive</option>
-        <option value="127">[P=30,S=10] Index 90 lbs (165g)</option>
-        <option value="128">[P=20,S=10] Inkjet Photo Paper 28-44 lbs (70g)</option>
-        <option value="129">[P=27,S=10] Inkjet Photo Paper 45-75 lbs (110g)</option>
-        <option value="130">[P=30,S= 3] Magnetic Sheet</option>
-        <option value="131">[P=30,S=10] Offset 24-60 lbs (90g)</option>
-        <option value="132">[P= 5,S=10] Print Paper Light Weight</option>
-        <option value="133">[P=25,S=10] Print Paper Medium Weight</option>
-        <option value="134">[P=20,S=10] Sticker Sheet</option>
-        <option value="135">[P=20,S=10] Tag 100 lbs (275g)</option>
-        <option value="136">[P=30,S=10] Text Paper 24-70 lbs (105g)</option>
-        <option value="137">[P=30,S=10] Vellum Bristol 57-67 lbs (145g)</option>
-        <option value="138">[P=30,S=10] Writing Paper 24-70 lbs (105g)</option>
       </param>
       <param name="speed" type="int" min="0" max="30" gui-text="Speed">0</param>
       <param name="pressure" type="int" min="0" max="33" gui-text="Pressure">0</param>
@@ -138,20 +98,8 @@ Minimal Traveling (no reverse): Like fully optimized but respect original orient
       <param name="dry_run" type="bool" gui-text="Dry Run: do not send commands to device">false</param>
       <!-- CAUTION: keep hardware list in sync with silhouette/Graphtec.py -->
       <param name="force_hardware" type="optiongroup" appearance="combo" gui-text="Override cutter model">
-	<option value="DETECT">-- as detected --</option>
-	<option translatable="no" value="Silhouette_Portrait">Silhouette Portrait</option>
-	<option translatable="no" value="Silhouette_Portrait2">Silhouette Portrait 2</option>
-	<option translatable="no" value="Silhouette_Portrait3">Silhouette Portrait 3</option>
-	<option translatable="no" value="Silhouette_Cameo">Silhouette Cameo</option>
-	<option translatable="no" value="Silhouette_Cameo2">Silhouette Cameo 2</option>
-	<option translatable="no" value="Silhouette_Cameo3">Silhouette Cameo 3</option>
-	<option translatable="no" value="Silhouette_Cameo4">Silhouette Cameo 4</option>
-	<option translatable="no" value="Silhouette_Cameo4_Plus">Silhouette Cameo 4 Plus</option>
-	<option translatable="no" value="Silhouette_Cameo4_Pro">Silhouette Cameo 4 Pro</option>
-	<option translatable="no" value="Craft_Robo_CC200-20">Craft Robo CC200-20</option>
-	<option translatable="no" value="Craft_Robo_CC300-20">Craft Robo CC300-20</option>
-	<option translatable="no" value="Silhouette_SD_1">Silhouette SD 1</option>
-	<option translatable="no" value="Silhouette_SD_2">Silhouette SD 2</option>
+	  <option value="DETECT">-- as detected --</option>
+	  <option translatable="no" value="Cricut_Maker1">Cricut Maker 1</option>
       </param>
       <label indent="2">Using any setting other than `as detected' is not recommended except when performing a dry run.</label>
     </page>
@@ -173,14 +121,15 @@ Always use the least amount of blade possible.
 6) Once this is done the blade can be put back in to the machine.
       </label>
       <param name="bladediameter" type="float" min="0.0" max="2.3" gui-text="Diameter of the used blade type [mm]">0.9</param>
-      <label>Correct value for the silhouette blade is 0.9mm</label>
+      <label>Correct value for the Cricut blade is 0.9mm</label>
     </page>
     <page name='about' gui-text='About'>
       <label translatable="no">inkscape-silhouette extension</label>
-      <label translatable="no" appearance="url" indent="1">https://github.com/fablabnbg/inkscape-silhouette</label>
-      <label translatable="no">by Jürgen Weigert [juergen@fabmail.org] and contributors</label>
+      <label translatable="no" appearance="url" indent="1">https://github.com/virtualabs/inkscape-cutcutgo</label>
+      <label translatable="no">by Damien Cauquil [dcauquil@gmail.com] and contributors</label>
+      <label translatable="no">based on inkscape-silhouette by Jürgen Weigert [juergen@fabmail.org] and contributors</label>
       <!-- Keep in sync with sendto_silhouette.py line 7 __version__ = ... -->
-      <label name="about_version" translatable="no">Version 1.28</label>
+      <label name="about_version" translatable="no">Version 1.0</label>
     </page>
   </param>
 
@@ -192,6 +141,6 @@ Always use the least amount of blade possible.
   </effect>
 
   <script>
-      <command location="inx" interpreter="python">sendto_silhouette.py</command>
+      <command location="inx" interpreter="python">sendto_cricut.py</command>
   </script>
 </inkscape-extension>

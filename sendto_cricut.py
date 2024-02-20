@@ -51,7 +51,7 @@ from tempfile import NamedTemporaryFile, gettempdir
 
 #from silhouette.Graphtec import SilhouetteCameo, CAMEO_MATS
 from silhouette.Graphtec import CAMEO_MATS
-from silhouette.Cutcutgo import CricutMaker as SilhouetteCameo
+from silhouette.Cutcutgo import CricutMaker
 from silhouette.Strategy import MatFree
 from silhouette.convert2dashes import convert2dash
 import silhouette.StrategyMinTraveling
@@ -104,9 +104,9 @@ class teeFile:
         self.f1.close()
         self.f2.close()
 
-class SendtoSilhouette(EffectExtension):
+class SendtoCricut(EffectExtension):
     """
-    Inkscape Extension to send to a Silhouette Cameo
+    Inkscape Extension to send to a Cricut Maker
     """
 
     # pretend no changes to skip `save()` in `InkscapeExtension.save_raw()`
@@ -162,9 +162,6 @@ class SendtoSilhouette(EffectExtension):
         pars.add_argument("-c", "--bladediameter",
                 dest = "bladediameter", type = float, default = 0.9,
                 help="[0..2.3] diameter of the used blade [mm], default = 0.9")
-        pars.add_argument("-C", "--cuttingmat",
-                choices=list(CAMEO_MATS.keys()), dest = "cuttingmat",
-                default = "cameo_12x12", help="Use cutting mat")
         pars.add_argument("-D", "--depth",
                 dest = "depth", type = int, default = -1,
                 help="[0..10], or -1 for media default")
@@ -224,9 +221,7 @@ class SendtoSilhouette(EffectExtension):
         pars.add_argument("-S", "--smoothness", type = float,
                 dest="smoothness", default=.05, help="Smoothness of curves")
         pars.add_argument("-t", "--tool",
-                choices=("autoblade", "cut", "pen", "default"), dest = "tool", default = None, help="Optimize for pen or knive")
-        pars.add_argument("-T", "--toolholder",
-                choices=("0", "1"), dest = "toolholder", default = None, help="[0..1]")
+                choices=("pen", "blade"), dest = "tool", default = None, help="Optimize for pen or knive")
         pars.add_argument("--preview",
                 dest = "preview", type = Boolean, default = True,
                 help="show cut pattern graphically before sending")
@@ -650,15 +645,16 @@ class SendtoSilhouette(EffectExtension):
             # Traverse the entire document
             self.recursivelyTraverseSvg(self.document.getroot())
 
-        if self.options.toolholder is not None:
-            self.options.toolholder = int(self.options.toolholder)
+        # Select tool and toolholder
+        # TODO: rework this section
         self.pen=None
-        self.autoblade=False
         if self.options.tool == "pen":
+            self.options.toolholder = 0 # left tool holder
+            self.options.x_off = 40 # 40mm offset required for left tool holder
             self.pen=True
-        if self.options.tool == "cut":
-            self.pen=False
-        if self.options.tool == "autoblade":
+            self.autoblade=False
+        elif self.options.tool == "blade":
+            self.options.toolholder = 1 # right tool holder
             self.pen=False
             self.autoblade=True
 
@@ -719,7 +715,7 @@ class SendtoSilhouette(EffectExtension):
             self.options.depth = None
 
         try:
-            dev = SilhouetteCameo(log=self.log, progress_cb=self.writeProgress,
+            dev = CricutMaker(log=self.log, progress_cb=self.writeProgress,
                                   cmdfile=self.cmdfile,
                                   inc_queries=self.options.inc_queries,
                                   dry_run=self.options.dry_run,
@@ -734,7 +730,7 @@ class SendtoSilhouette(EffectExtension):
         dev.setup(media=int(self.options.media, 10),
                 pen=self.pen,
                 toolholder=self.options.toolholder,
-                cuttingmat=self.options.cuttingmat,
+                cuttingmat=None,
                 sharpencorners=self.options.sharpencorners,
                 sharpencorners_start=self.options.sharpencorners_start,
                 sharpencorners_end=self.options.sharpencorners_end,
@@ -821,11 +817,11 @@ class SendtoSilhouette(EffectExtension):
 
 
 if __name__ == "__main__":
-    e = SendtoSilhouette()
+    e = SendtoCricut()
 
         # write a tempfile that is removed on exit
     if (len(sys.argv) < 2):
-        tmpfile=NamedTemporaryFile(suffix=".svg", prefix="inkscape-silhouette", delete=False)
+        tmpfile=NamedTemporaryFile(suffix=".svg", prefix="inkscape-cutcutgo", delete=False)
         tmpfile.write(b'<svg xmlns="http://www.w3.org/2000/svg" width="100mm" height="100mm" viewBox="0 0 100 100"><path d="M 0, 0" /></svg>')
         tmpfile.close()
         e.run([tmpfile.name])
