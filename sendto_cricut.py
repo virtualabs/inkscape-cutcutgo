@@ -189,10 +189,8 @@ class SendtoCricut(EffectExtension):
                 dest = "sw_clipping", type = Boolean, default = True,
                 help="Enable software clipping")
         pars.add_argument("-m", "--media", "--media-id", "--media_id",
-                dest = "media", default = "132",
-                choices=("100", "101", "102", "106", "111", "112", "113",
-                "120", "121", "122", "123", "124", "125", "126", "127", "128", "129", "130",
-                "131", "132", "133", "134", "135", "136", "137", "138", "300"),
+                dest = "media", default = "1",
+                choices=[ str(i) for i in range(1, 11)],
                 help="113 = pen, 132 = printer paper, 300 = custom")
         pars.add_argument("-o", "--overcut",
                 dest = "overcut", type = float, default = 0.5,
@@ -201,7 +199,7 @@ class SendtoCricut(EffectExtension):
                 dest = "multipass", type = int, default = 1,
                 help="[1..8], cut/draw each path object multiple times.")
         pars.add_argument("-p", "--pressure",
-                dest = "pressure", type = int, default = 10,
+                dest = "pressure", type = int, default = 0,
                 help="[1..18], or 0 for media default")
         pars.add_argument("-P", "--sharpencorners",
                 dest = "sharpencorners", type = Boolean, default = False,
@@ -216,7 +214,7 @@ class SendtoCricut(EffectExtension):
                 dest = "reversetoggle", type = Boolean, default = False,
                 help="Cut each path the other direction. Affects every second pass when multipass.")
         pars.add_argument("-s", "--speed",
-                dest = "speed", type = int, default = 10,
+                dest = "speed", type = int, default = 0,
                 help="[1..10], or 0 for media default")
         pars.add_argument("-S", "--smoothness", type = float,
                 dest="smoothness", default=.05, help="Smoothness of curves")
