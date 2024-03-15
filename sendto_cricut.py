@@ -9,6 +9,8 @@ __version__ = "1.28"     # Keep in sync with sendto_silhouette.inx ca line 179
 __author__ = "Juergen Weigert <juergen@fabmail.org> and contributors"
 
 import sys, os, time, math, operator
+import matplotlib.pyplot as plt
+import numpy as np
 
 # we sys.path.append() the directory where this script lives.
 sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])))
@@ -615,6 +617,81 @@ class SendtoCricut(EffectExtension):
             cut.append(multipath)
         return cut
 
+
+    def unit_vector(self, vector):
+        """ Returns the unit vector of the vector.  """
+        return vector / np.linalg.norm(vector)
+
+    def dedup_paths(self, paths:list) -> list:
+        output = []
+        for path in paths:
+            path_ = [path[0]]
+            for point in path:
+                if point != path_[-1]:
+                    path_.append(point)
+            output.append(path_)
+        return output
+
+
+    def path_add_serifs(self, path: list, blade_width: float = 0.9) -> list:
+        """Add serifs to a path
+        """
+        # Sanity check
+        if len(path) == 0:
+            return []
+
+        start_point = path[0]
+        output = [start_point]
+        for i in range(1, len(path) - 1):
+            mid_point = path[i]
+            end_point = path[i+1]
+            
+            # Compute the angle formed by these two segments
+            xa,ya = start_point
+            xb,yb = mid_point
+            xc,yc = end_point
+            v1 = self.unit_vector(((xb - xa), (yb - ya)))
+            v2 = self.unit_vector(((xc - xb), (yc - yb)))
+            a = np.arccos(np.clip(np.dot(v1, v2), -1.0, 1.0))
+            
+            # If our blade has to turn, add serif
+            if a > (math.pi/8.):
+                # overcut
+                d = v1 * (blade_width/2.0)
+                extra_point = [xb+d[0],yb+d[1]]
+                output.append(extra_point)
+
+                # rotate to turn the blade
+                theta = a
+                #print(theta, theta>=pi/2)
+                steps = abs(int(theta/(math.pi/20)))
+                for j in range(steps):
+                    if np.cross(v1, v2) < 0:
+                        rotmat = np.array([
+                            [math.cos(j*(math.pi/20)), math.sin(j*(math.pi/20))],
+                            [-math.sin(j*(math.pi/20)), math.cos(j*(math.pi/20))]
+                        ])
+                    else:
+                        rotmat = np.array([
+                            [math.cos(j*(math.pi/20)), -math.sin(j*(math.pi/20))],
+                            [math.sin(j*(math.pi/20)), math.cos(j*(math.pi/20))]
+                        ])
+                    dest_point = np.matmul(rotmat, d)
+                    output.append((dest_point[0]+xb, dest_point[1]+yb))
+                z = v2*(blade_width/2.0)
+                output.append((xb + z[0], yb+z[1]))
+            else:
+                output.append(mid_point)
+
+            start_point = mid_point
+        output.append(path[-1])
+
+        return output
+
+    def add_serifs(self, paths: list, blade_width:float=0.9) -> list:
+        return list(map(lambda x: self.path_add_serifs(x, blade_width), paths))
+
+
     def effect(self):
         log_path = self.options.logfile or self.default_logfile_path
         mode = "a" if self.options.append_logs else "w"
@@ -686,6 +763,11 @@ class SendtoCricut(EffectExtension):
 
         # Handle multipass & overcut
         cut = self.multipassOvercut(self.paths, self.options.multipass, self.options.reversetoggle, self.options.overcut)
+        
+        # If autoblade is selected, add serifs
+        if self.autoblade:
+            cut = self.dedup_paths(cut)
+            cut = self.add_serifs(cut)
 
         if self.options.dump_paths:
             pointcount = 0
