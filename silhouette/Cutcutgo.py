@@ -136,15 +136,21 @@ class CricutMaker:
             # TODO: handle potential exceptions.
             dev = Serial(port.device, baudrate=115200, timeout=5000)
             dev_port = port.device
+        
+        # If our Cricut device has been found, exit search
+        if dev is not None:
+          break
 
-
-      if dev is None:
+    # If no device has been found
+    if dev is None:
+        # If dry run enabled, continue
         if dry_run:
-          print("No device detected; continuing dry run with dummy device",
+            print("No device detected; continuing dry run with dummy device",
                 file=self.log)
-          self.hardware = dict(name='Crashtest Dummy Device')
+            self.hardware = dict(name='Crashtest Dummy Device')
         else:
-          raise ValueError('No Cricut Maker devices found.\nCheck USB and Power.')
+            # Raise an error if no Cricut device found.
+            raise ValueError('No Cricut Maker devices found.\nCheck USB and Power.')
         
     print("%s found on port %s" % (self.hardware['name'], dev_port), file=self.log)
 
