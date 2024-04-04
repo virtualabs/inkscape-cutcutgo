@@ -1,30 +1,17 @@
-# inkscape-silhouette
+# inkscape-cutcutgo
 
-[![Run Python tests](https://github.com/fablabnbg/inkscape-silhouette/actions/workflows/run-tests.yml/badge.svg)](https://github.com/fablabnbg/inkscape-silhouette/actions/workflows/run-tests.yml)
+An extension to drive a Cricut Maker running the CutcutGo firmware from within inkscape,
+largely derived from [inkscape-silhouette](https://github.com/fablabnbg/inkscape-silhouette)
+developed by Juergen Weigert and contributors.
 
-An extension to drive a Silhouette Cameo and similar plotter devices from within inkscape.
-100% pure python, ontop of the libusb backend.
+Here is the online documentation with photos: https://virtualabs.github.io/cutcutgo/
 
-Here is the wiki with photos and a video: https://github.com/fablabnbg/inkscape-silhouette/wiki
 
 ## Supported Devices
 
 This extension should work with the following devices:
 
-* Silhouette Portrait
-* Silhouette Portrait 2 (working confirmed)
-* Silhouette Portrait 3
-* Silhouette Cameo
-* Silhouette Cameo 2
-* Silhouette Cameo 3
-* Silhouette Cameo 4
-* Silhouette Cameo 4 Plus
-* Silhouette Cameo 4 Pro
-* Silhouette Curio (partial success confirmed in #36)
-* Craft Robo CC200-20
-* Craft Robo CC300-20
-* Silhouette SD 1
-* Silhouette SD 2
+* Cricut Maker 1 (with CutcutGo firmware)
 
 ---
 
@@ -34,8 +21,6 @@ This extension should work with the following devices:
 
 <details>
 <summary>Click to get steps</summary>
-
-WARNING: SNAP packages may cause issues. We use deb file shown later in this section.
 
 #### Install Inkscape and other requirements
 
@@ -57,19 +42,16 @@ sudo apt-get --with-new-pkgs upgrade inkscape
 # Install requirements for usb support
 sudo apt-get install python3-usb
 
-# Install requirements for Silhouette Multiple Actions
-sudo apt install python3-wxgtk4.0
-
 # Install all requirements from python package manager
 sudo apt-get install python3-pip
 python3 -m pip install -U pip
 python3 -m pip install -r requirements.txt
 ```
 
-#### Install inkscape-silhouette
+#### Install inkscape-cutcutgo
 
 From here, you should have all the required python packages and inkscape version.
-So now we shall install inkscape-silhouette, so scroll down the latest releases and head to the Assets section of releases and click on the *.deb file. You can then use `sudo apt-get install ./*.deb` where `*.deb` is the name of your newly downloaded file.
+So now we shall install inkscape-cutcutho, so scroll down the latest releases and head to the Assets section of releases and click on the *.deb file. You can then use `sudo apt-get install ./*.deb` where `*.deb` is the name of your newly downloaded file.
 
 * https://github.com/fablabnbg/inkscape-silhouette/releases
 
@@ -80,15 +62,14 @@ So now we shall install inkscape-silhouette, so scroll down the latest releases 
 <details>
 <summary>Click to get steps</summary>
 
-* Download https://github.com/fablabnbg/inkscape-silhouette/archive/main.zip
+* Download https://github.com/virtualabs/inkscape-cutcutgo/archive/main.zip
 * Unzip the archive into a directory (which will be called inkscape-silhouette-main by default)
 * In a terminal, change into that directory
 * Execute `make install-local` to install just in your user account, or (if you have permissions) `sudo make install`
 to install for all users
 
 * `sudo apt-get install python3-usb` if you have permissions, otherwise `python3 -m pip install usb`
-* restart inkscape, check that you see new menu entries "Extensions -> Export -> Send to Silhouette"
-and " ... -> Silhouette Multi Action".
+* restart inkscape, check that you see new menu entries "Extensions -> Export -> Send to Cricut".
 
 </details>
 
@@ -103,8 +84,8 @@ and " ... -> Silhouette Multi Action".
 
 ```shell
 sudo pacman -S inkscape python-lxml python-pyusb
-git clone https://github.com/fablabnbg/inkscape-silhouette.git
-cd inkscape-silhouette
+git clone https://github.com/virtualabs/inkscape-cutcutgo.git
+cd inkscape-cutcutgo
 ```
 
 and then either `make install-local` to install just for your user account, or `sudo make install`
@@ -140,9 +121,9 @@ the usb package appropriate to the version of python that runs by default as `py
 ```
 sudo pkg install inkscape py39-libusb1
 cd /tmp
-wget -c "https://github.com/fablabnbg/inkscape-silhouette/archive/main.zip"
+wget -c "https://github.com/virtualabs/inkscape-cutcutgo/archive/main.zip"
 unzip main.zip
-cd inkscape-silhouette-main
+cd inkscape-cutcutgo-main
 sudo make install   # OR: make install-local  # latter installs only for this user
 ```
 
@@ -183,10 +164,10 @@ To later undo:
 * Install pyusb:
   * Still in command line enter `.\python.exe -m pip install pyusb`
 
-#### Silhouette inkscape extension itself
+#### CutcutGo inkscape extension itself
 
-* Download https://github.com/fablabnbg/inkscape-silhouette/archive/main.zip
-* Open the downloaded file and select the following five items: `silhouette`, `sendto_silhouette.inx`, `sendto_silhouette.py`, `silhouette_multi.inx`, `silhouette_multi.py`
+* Download https://github.com/virtualabs/inkscape-cutcutgo/archive/main.zip
+* Open the downloaded file and select the following three items: `cutcutgo`, `sendto_cricut.inx`, `sendto_cricut.py`
 * Extract them to your `share\inkscape\extensions` directory, e.g. `C:\Program Files\Inkscape\share\inkscape\extensions`
 * Restart inkscape
 
@@ -202,16 +183,9 @@ Refer to the [userguide instructions](./USERGUIDE.md) for further details.
 
 ### CLI
 
-Run `sendto_silhouette.py --help` for information on CLI usage.
+Run `sendto_cricut.py --help` for information on CLI usage.
 
 ---
-
-## Templates
-* Templates showing the cutting mat on a background layer can be found in `examples/mat_templates`
-* Copy those files into the `templates` subdirectory below inkscapes configuration directory
-* To identify the correct path open inkscape's preferences and selecting `System`. There you find the path as `User templates`
-* Those templates can then be selected within the dialog available through `File` &rarr; `New from Template...`
-* Once you have created a new document from those templates you can import other `*.svg`-files and place the contained objects for cutting
 
 ## Troubleshooting
 
@@ -246,8 +220,6 @@ This fails on win32/64 with 'module has no attribute 'version info' which then c
   the bounding box instead of plotting all strokes.
   This can be used (with low pressure=1 or removed knive) to just
   check, where the plot would be.
-* The standalone script `arrow_test.py` can be used to test drive
-  the `SilhoutteCameo` class.
 * Robust communication with the device. Small writes and timeouts are
   handled gracefully. Timeouts will occur, when we travel far with low speed.
 * Multipass: Can repeat each stroke multiple times to enhance plot or

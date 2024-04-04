@@ -2,15 +2,15 @@
 test -e /usr/bin/xpath || sudo apt-get install libxml-xpath-perl
 test -e /usr/bin/checkinstall || sudo apt-get install checkinstall
 #
-VERSION=$( python3 ../sendto_silhouette.py --version )
-INX_VERSION=$( xpath -q -e '//*[@name="about_version"]/text()' ../sendto_silhouette.inx | sed -e 's/^version //i' ) # grep Version ../*.inx
+VERSION=$( python3 ../sendto_cricut.py --version )
+INX_VERSION=$( xpath -q -e '//*[@name="about_version"]/text()' ../sendto_cricut.inx | sed -e 's/^version //i' ) # grep Version ../*.inx
 echo "Source version is: \"$VERSION\""
 echo "INX version is: \"$INX_VERSION\""
 test "$VERSION" = "$INX_VERSION" || ( echo "Error: python source and .inx version differ" && exit 1 )
 
 
 
-name=inkscape-silhouette
+name=inkscape-cutcutgo
 if [ -d $name ]
 then
 	echo "Removing leftover files"
@@ -20,10 +20,9 @@ echo "Copying contents ..."
 mkdir $name
 cp ../README.md $name/README
 cp ../LICENSE* $name/
-cp -a ../silhouette $name/
-cp ../*silhouette*.py ../*.inx $name/
+cp -a ../cutcutgo $name/
+cp ../sendto_cricut.py ../*.inx $name/
 cp -a ../locale $name/
-cp -a ../templates $name/
 
 
 echo "****************************************************************"

@@ -1,0 +1,295 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-04 22:35+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: sendto_cricut.inx:3
+msgid "Send to Cricut"
+msgstr ""
+
+#: sendto_cricut.inx:11
+msgid "Tool"
+msgstr ""
+
+#: sendto_cricut.inx:12
+msgid "Pen"
+msgstr ""
+
+#: sendto_cricut.inx:13
+msgid "Fine-point Blade"
+msgstr ""
+
+#: sendto_cricut.inx:26
+msgid "'pen' executes the strokes exactly as sent, 'cut' adds small serifs to help the knive find its orientation at corners."
+msgstr ""
+
+#: sendto_cricut.inx:28
+msgid "Media"
+msgstr ""
+
+#: sendto_cricut.inx:29
+msgid "Laser Copy Paper"
+msgstr ""
+
+#: sendto_cricut.inx:49
+msgid "Preview: show cut pattern before sending"
+msgstr ""
+
+#: sendto_cricut.inx:50
+msgid "Note that for Preview to operate, the `matplotlib' package for Python must be installed."
+msgstr ""
+
+#: sendto_cricut.inx:52
+msgid "Options"
+msgstr ""
+
+#: sendto_cricut.inx:53
+msgid "Convert to dashes"
+msgstr ""
+
+#: sendto_cricut.inx:53
+msgid "Convert paths with dashed strokes to separate subpaths for perforated cuts."
+msgstr ""
+
+#: sendto_cricut.inx:54
+msgid "Trim margins"
+msgstr ""
+
+#: sendto_cricut.inx:54
+msgid "Shift to the top lefthand corner, then do offsets."
+msgstr ""
+
+#: sendto_cricut.inx:55
+msgid "Draft Bounding Box Only"
+msgstr ""
+
+#: sendto_cricut.inx:56
+msgid "To see the used area, tick the checkmark above and use pressure=1 (or better remove tool)"
+msgstr ""
+
+#: sendto_cricut.inx:57
+msgid "Repeat each stroke"
+msgstr ""
+
+#: sendto_cricut.inx:58
+msgid "Cut in opposite direction(s)"
+msgstr ""
+
+#: sendto_cricut.inx:59
+msgid "Position After Cutting"
+msgstr ""
+
+#: sendto_cricut.inx:60
+msgid "Start Position"
+msgstr ""
+
+#: sendto_cricut.inx:61
+msgid "Below Cut-Out"
+msgstr ""
+
+#: sendto_cricut.inx:63
+msgid "Choose position of blade relative to the media after cutting. \"Below Cut-Out\" is ideal for using cross-cutter."
+msgstr ""
+
+#: sendto_cricut.inx:64
+msgid "End Position Offset [mm]"
+msgstr ""
+
+#: sendto_cricut.inx:65
+msgid "Adjusts the final position selected above; currently only implemented for \"Below Cut-Out\". Allows you to leave space between cuts (or with a negative value, position above the bottom of the cut, which can reduce wasted material for repeating certain patterns)."
+msgstr ""
+
+#: sendto_cricut.inx:68
+msgid "Advanced"
+msgstr ""
+
+#: sendto_cricut.inx:70
+msgid "Wait til done, after all data is sent"
+msgstr ""
+
+#: sendto_cricut.inx:71
+msgid "Keep dialog open until device becomes idle again."
+msgstr ""
+
+#: sendto_cricut.inx:72
+msgid "Cutting Strategy"
+msgstr ""
+
+#: sendto_cricut.inx:73
+msgid "Z-Order"
+msgstr ""
+
+#: sendto_cricut.inx:74
+msgid "Without mat"
+msgstr ""
+
+#: sendto_cricut.inx:75
+msgid "Minimized Traveling"
+msgstr ""
+
+#: sendto_cricut.inx:76
+msgid "Minimized Traveling (fully optimized)"
+msgstr ""
+
+#: sendto_cricut.inx:77
+msgid "Minimized Traveling (no reverse)"
+msgstr ""
+
+#: sendto_cricut.inx:79
+msgid ""
+"\n"
+"Z-Order: Leaf cut order as defined in input svg.\n"
+"Without mat: Subdivide, sort, and choose cut directions, so that a cutting mat is not needed in most cases.\n"
+"Minimal Traveling: Find the nearest startpoint to minimize travel movements\n"
+"Minimal Traveling (fully optimized): Additionally search startpoints in closed paths\n"
+"Minimal Traveling (no reverse): Like fully optimized but respect original orientations of paths"
+msgstr ""
+
+#: sendto_cricut.inx:85
+msgid "Pre-orient paths"
+msgstr ""
+
+#: sendto_cricut.inx:86
+msgid "As in SVG"
+msgstr ""
+
+#: sendto_cricut.inx:87
+msgid "Descending Y (pull through tool)"
+msgstr ""
+
+#: sendto_cricut.inx:88
+msgid "Ascending Y (push into tool)"
+msgstr ""
+
+#: sendto_cricut.inx:89
+msgid "Descending X (right to left)"
+msgstr ""
+
+#: sendto_cricut.inx:90
+msgid "Ascending X (left to right)"
+msgstr ""
+
+#: sendto_cricut.inx:92
+msgid "Note: Some strategies like \"Without Mat\" may reverse some path orientations, so final cut may not strictly obey orientation chosen above."
+msgstr ""
+
+#: sendto_cricut.inx:93
+msgid "Fuse coincident paths"
+msgstr ""
+
+#: sendto_cricut.inx:94
+msgid "Merges consecutive paths that end and start with same point to minimize tool lifting. (Most effective with the Min Travel strategies.)"
+msgstr ""
+
+#: sendto_cricut.inx:95
+msgid "Enable Software Clipping"
+msgstr ""
+
+#: sendto_cricut.inx:98
+msgid "Log and Dump"
+msgstr ""
+
+#: sendto_cricut.inx:99
+msgid "Save log messages in file"
+msgstr ""
+
+#: sendto_cricut.inx:100
+msgid "Note: If path is empty, system default will be chosen."
+msgstr ""
+
+#: sendto_cricut.inx:101
+msgid "Include final cut paths in log (for debugging)"
+msgstr ""
+
+#: sendto_cricut.inx:102
+msgid "Append to log/dump files rather than overwriting"
+msgstr ""
+
+#: sendto_cricut.inx:103
+msgid "Transcribe cutter commands to file"
+msgstr ""
+
+#: sendto_cricut.inx:104
+msgid "Include cutter queries in command transcript"
+msgstr ""
+
+#: sendto_cricut.inx:105
+msgid "Dry Run: do not send commands to device"
+msgstr ""
+
+#: sendto_cricut.inx:107
+msgid "Override cutter model"
+msgstr ""
+
+#: sendto_cricut.inx:108
+msgid "-- as detected --"
+msgstr ""
+
+#: sendto_cricut.inx:111
+msgid "Using any setting other than `as detected' is not recommended except when performing a dry run."
+msgstr ""
+
+#: sendto_cricut.inx:114
+msgid "Blade Setting"
+msgstr ""
+
+#: sendto_cricut.inx:115
+msgid ""
+"\n"
+"Always use the least amount of blade possible.\n"
+"\n"
+"1) Take a sheet of the media you are trying to cut and fold it in half.\n"
+"\n"
+"2) Take the blade out of the machine, set it to 1 and hold it in your hand as you would a pen but held vertically as it would be in the machine.\n"
+"\n"
+"3) Get your folded media and with your blade held like a pen but kept vertically press firmly down on the media and 'draw' a line.\n"
+"\n"
+"4) Next have a look at the media; with the correct setting you should have just cut a line through the top layer of the folded card without cutting in to the back layer. If you have not cut through the media, increase the blade by 1 position and repeat from step 3.\n"
+"\n"
+"5) Keep doing this until you reach the correct setting to cut the top layer without cutting the back.\n"
+"\n"
+"6) Once this is done the blade can be put back in to the machine.\n"
+"      "
+msgstr ""
+
+#: sendto_cricut.inx:130
+msgid "Diameter of the used blade type [mm]"
+msgstr ""
+
+#: sendto_cricut.inx:131
+msgid "Correct value for the Cricut blade is 0.9mm"
+msgstr ""
+
+#: sendto_cricut.inx:133
+msgid "About"
+msgstr ""
+
+#: sendto_cricut.inx:146
+msgid "Export"
+msgstr ""
+
+#: sendto_cricut.py:411
+msgid "Warning: unable to draw text; please convert it to a path first. Or consider using the Hershey Text extension which can be installed in the 'Render' category of extensions."
+msgstr ""
+
+#: sendto_cricut.py:421
+msgid "Warning: unable to draw bitmap images; please convert them to line art first.  Consider using the 'Trace bitmap...' tool of the 'Path' menu.  Mac users please note that some X11 settings may cause cut-and-paste operations to paste in bitmap copies."
+msgstr ""
+
+#: sendto_cricut.py:441
+msgid "Warning: unable to draw <{str(t[-1])}> object,"
+msgstr ""

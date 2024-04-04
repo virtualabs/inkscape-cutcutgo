@@ -1,4 +1,4 @@
-An inkscape extension to drive a Silhouette Cameo plotter.
+An inkscape extension to drive a Cricut Maker.
 
 Requires python3-usb 1.0.0 -- if this causes errors, please try:
 <pre>

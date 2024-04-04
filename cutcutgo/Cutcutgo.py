@@ -14,37 +14,14 @@ from serial.tools import list_ports
 
 sys_platform = sys.platform.lower()
 
-MEDIA = [
-# CAUTION: keep in sync with sendto_silhouette.inx
+# CAUTION: keep in sync with sendto_cricut.inx
 # media, pressure, speed, depth, cap-color, name
-  ( 100,   27,     10,   1,  "yellow", "Card without Craft Paper Backing"),
-  ( 101,   27,     10,   1,  "yellow", "Card with Craft Paper Backing"),
-  ( 102,   10,      5,   1,  "blue",   "Vinyl Sticker"),
-  ( 106,   14,     10,   1,  "blue",   "Film Labels"),
-  ( 111,   27,     10,   1,  "yellow", "Thick Media"),
-  ( 112,    2,     10,   1,  "blue",   "Thin Media"),
-  ( 113,   18,     10,None,  "pen",    "Pen"),
-  ( 120,   30,     10,   1,  "blue",   "Bond Paper 13-28 lbs (105g)"),
-  ( 121,   30,     10,   1,  "yellow", "Bristol Paper 57-67 lbs (145g)"),
-  ( 122,   30,     10,   1,  "yellow", "Cardstock 40-60 lbs (90g)"),
-  ( 123,   30,     10,   1,  "yellow", "Cover 40-60 lbs (170g)"),
-  ( 124,    1,     10,   1,  "blue",   "Film, Double Matte Translucent"),
-  ( 125,    1,     10,   1,  "blue",   "Film, Vinyl With Adhesive Back"),
-  ( 126,    1,     10,   1,  "blue",   "Film, Window With Kling Adhesive"),
-  ( 127,   30,     10,   1,  "red",    "Index 90 lbs (165g)"),
-  ( 128,   20,     10,   1,  "yellow", "Inkjet Photo Paper 28-44 lbs (70g)"),
-  ( 129,   27,     10,   1,  "red",    "Inkjet Photo Paper 45-75 lbs (110g)"),
-  ( 130,   30,      3,   1,  "red",    "Magnetic Sheet"),
-  ( 131,   30,     10,   1,  "blue",   "Offset 24-60 lbs (90g)"),
-  ( 132,    5,     10,   1,  "blue",   "Print Paper Light Weight"),
-  ( 133,   25,     10,   1,  "yellow", "Print Paper Medium Weight"),
-  ( 134,   20,     10,   1,  "blue",   "Sticker Sheet"),
-  ( 135,   20,     10,   1,  "red",    "Tag 100 lbs (275g)"),
-  ( 136,   30,     10,   1,  "blue",   "Text Paper 24-70 lbs (105g)"),
-  ( 137,   30,     10,   1,  "yellow", "Vellum Bristol 57-67 lbs (145g)"),
-  ( 138,   30,     10,   1,  "blue",   "Writing Paper 24-70 lbs (105g)"),
-  ( 300, None,   None,None,  "custom", "Custom"),
-]
+MEDIA = {
+  1: {
+    "name": "Laser Copy Paper",
+    "pressure": 8.5,
+  }
+}
 
 CRICUT_MATS = dict(
   no_mat=('0', False, False),
@@ -114,6 +91,7 @@ class CricutMaker:
     self.progress_cb = progress_cb
     dev = None
     self.margins_printed = None
+    self.pressure = 8.5
 
     if self.dry_run:
       print("Dry run specified; no commands will be sent to cutter.",
@@ -293,7 +271,7 @@ class CricutMaker:
     """ Lower tool (if not lowered) and cut """
     if self.tool_up:
       self.tool_up = False 
-      return [b"G01Z-10F10", b"G01X%fY%fF10" % (mmx, mmy)]
+      return [b"G01Z-%fF10" % self.pressure, b"G01X%fY%fF10" % (mmx, mmy)]
     else:
       return [b"G01X%fY%fF10" % (mmx, mmy)]
 
@@ -595,13 +573,13 @@ class CricutMaker:
     """
     pass
 
-  def setup(self, media=132, speed=None, pressure=None, toolholder=None, pen=None, cuttingmat=None, sharpencorners=False, sharpencorners_start=0.1, sharpencorners_end=0.1, autoblade=False, depth=None, sw_clipping=True, clip_fuzz=0.05, trackenhancing=False, bladediameter=0.9, landscape=False, leftaligned=None, mediawidth=210.0, mediaheight=297.0):
-    """Setup the Silhouette Device
+  def setup(self, media=1, speed=None, pressure=None, toolholder=None, pen=None, cuttingmat=None, sharpencorners=False, sharpencorners_start=0.1, sharpencorners_end=0.1, autoblade=False, depth=None, sw_clipping=True, clip_fuzz=0.05, trackenhancing=False, bladediameter=0.9, landscape=False, leftaligned=None, mediawidth=210.0, mediaheight=297.0):
+    """Setup the Cricut Device
 
     Parameters
     ----------
         media : int, optional
-            range is [100..300], "Print Paper Light Weight". Defaults to 132.
+            range is [1..11], "Print Paper Light Weight". Defaults to 1.
         speed : int, optional
             range is [1..10] for Cameo3 and older,
             range is [1..30] for Cameo4. Defaults to None, from paper (132 -> 10).
@@ -650,20 +628,18 @@ class CricutMaker:
     #self.set_cutting_mat(cuttingmat, mediawidth, mediaheight)
 
     if media is not None:
-      if media < 100 or media > 300: media = 300
+        if media < 1 or media > 11: media = 1
 
-      if pen is None:
-        if media == 113:
-          pen = True
-        else:
-          pen = False
-      for i in MEDIA:
-        if i[0] == media:
-          print("Media=%d, cap='%s', name='%s'" % (media, i[4], i[5]), file=self.log)
-          if pressure is None: pressure = i[1]
-          if speed is None:    speed = i[2]
-          if depth is None:    depth = i[3]
-          break
+        if pen is None:
+            if media == 1:
+                pen = True
+            else:
+                pen = False
+
+        if media in MEDIA:
+            selected_media = MEDIA[media]
+            print("Media=%d, name='%s'" % (media, selected_media['name']), file=self.log)
+            if pressure is None: self.pressure = selected_media['pressure']
 
     # Select the right toolholder
     self.send_receive_command([b'T%d' % toolholder, b'$H'])

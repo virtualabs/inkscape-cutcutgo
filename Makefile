@@ -1,10 +1,10 @@
 # a simple makefile to pull a tar ball.
 
 PREFIX?=/usr
-DISTNAME=inkscape-silhouette
+DISTNAME=inkscape-cutcutgo
 EXCL=--exclude \*.orig --exclude \*.pyc
-ALL=README.md *.png *.sh *.rules *.py *.inx examples misc silhouette locale
-VERS=$$(python3 ./sendto_silhouette.py --version)
+ALL=README.md *.png *.sh *.rules *.py *.inx examples misc cutcutgo locale
+VERS=$$(python3 ./sendto_cricut.py --version)
 
 ## echo python3 ./sendto_silhouette.py
 # 'module' object has no attribute 'core'
@@ -44,33 +44,25 @@ dist: mo # Genearate OS specific packagings and install files (Windows, Linux Di
 install: mo # Install is used by dist or use this with this command `sudo make install` to install for all users
 	mkdir -p $(DEST)
 	@# CAUTION: cp -a does not work under fakeroot. Use cp -r instead.
-	cp -r silhouette $(DEST)
-	install -m 755 *silhouette*.py $(DEST)
+	cp -r cutcutgo $(DEST)
+	install -m 755 sendto_cricut.py $(DEST)
 	install -m 644 *.inx $(DEST)
 	cp -r locale $(LOCALE)
-	mkdir -p $(UDEV)/rules.d
-	install -m 644 -T silhouette-udev.rules $(UDEV)/rules.d/40-silhouette-udev.rules
-	install -m 644 silhouette-icon.png $(UDEV)
-	install -m 644 silhouette-udev-notify.sh $(UDEV)
-	mkdir -p $(INKSCAPE_TEMPLATES)
-	install -m 644 templates/*.svg $(INKSCAPE_TEMPLATES)
 
 .PHONY: install-local
 install-local: mo # Use this with `make install-local` to install just in your user account
 	mkdir -p $(DESTLOCAL)
 	@# CAUTION: cp -a does not work under fakeroot. Use cp -r instead.
-	cp -r silhouette $(DESTLOCAL)
-	install -m 755 *silhouette*.py $(DESTLOCAL)
+	cp -r cutcutgo $(DESTLOCAL)
+	install -m 755 sendto_cricut.py $(DESTLOCAL)
 	install -m 644 *.inx $(DESTLOCAL)
 	cp -r locale $(DESTLOCAL)
-	mkdir -p $(USER_INKSCAPE_TEMPLATES)
-	install -m 644 templates/*.svg $(USER_INKSCAPE_TEMPLATES)
 
 .PHONY: tar_dist_classic
 tar_dist_classic: clean mo # Create a compressed tarball archive file (.tar.bz2) that contains the distribution files for the Inkscape Silhouette project. (Using a fixed list defined in $ALL)
 	name=$(DISTNAME)-$(VERS); echo "$$name"; echo; \
 	tar jcvf $$name.tar.bz2 $(EXCL) --transform="s,^,$$name/," $(ALL)
-	grep about_version ./sendto_silhouette.inx 
+	grep about_version ./sendto_cricut.inx 
 	@echo version should be $(VERS)
 
 .PHONY: tar_dist
@@ -90,21 +82,17 @@ clean: # Cleanup generated/compiled files and restore project back to nominal st
 generate_pot: # Updates Portable Object Template
 	mkdir -p po/its
 	curl -s -o po/its/inx.its https://gitlab.com/inkscape/inkscape/-/raw/master/po/its/inx.its
-	xgettext --its po/its/inx.its --no-wrap -o po/inkscape-silhouette.pot *.inx
-	xgettext --no-wrap -j -o po/inkscape-silhouette.pot *silhouette*.py
+	xgettext --its po/its/inx.its --no-wrap -o po/inkscape-cutcutgo.pot *.inx
+	xgettext --no-wrap -j -o po/inkscape-cutcutgo.pot sendto_cricut.py
 
 .PHONY: update_po
 update_po: # Updates localised translation/internationalisation with any new UI language entries from the main Portable Object Template file ./po/inkscape-silhouette.pot
 	$(foreach po, $(wildcard po/*.po), \
-		msgmerge -q --update --no-wrap $(po) po/inkscape-silhouette.pot; )
+		msgmerge -q --update --no-wrap $(po) po/inkscape-cutcutgo.pot; )
 
 .PHONY: mo
 mo: # Compile transations for different human languages into binary .mo file for internationalisation and localisation purposes. (e.g. ./po/de.po)
 	mkdir -p locale
 	$(foreach po, $(wildcard po/*.po), \
 		mkdir -p locale/$(basename $(notdir $(po)))/LC_MESSAGES; \
-		msgfmt -c -o locale/$(basename $(notdir $(po)))/LC_MESSAGES/inkscape-silhouette.mo $(po); )
-
-.PHONY: test
-test: # Run local test (Must have umockdev installed)
-	pytest -s -vv test
+		msgfmt -c -o locale/$(basename $(notdir $(po)))/LC_MESSAGES/inkscape-cutcutgo.mo $(po); )

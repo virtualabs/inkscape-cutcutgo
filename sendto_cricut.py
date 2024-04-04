@@ -5,8 +5,8 @@
 # (C) 2013 jw@suse.de. Licensed under CC-BY-SA-3.0 or GPL-2.0 at your choice.
 # (C) 2014 - 2023  juewei@fabmail.org and contributors
 
-__version__ = "1.28"     # Keep in sync with sendto_silhouette.inx ca line 179
-__author__ = "Juergen Weigert <juergen@fabmail.org> and contributors"
+__version__ = "1.0"     # Keep in sync with sendto_silhouette.inx ca line 179
+__author__ = "Damien Cauquil <virtualabs@gmail.com>"
 
 import sys, os, time, math, operator
 import matplotlib.pyplot as plt
@@ -51,14 +51,12 @@ from gettext import gettext
 from optparse import SUPPRESS_HELP
 from tempfile import NamedTemporaryFile, gettempdir
 
-#from silhouette.Graphtec import SilhouetteCameo, CAMEO_MATS
-from silhouette.Graphtec import CAMEO_MATS
-from silhouette.Cutcutgo import CricutMaker
-from silhouette.Strategy import MatFree
-from silhouette.convert2dashes import convert2dash
-import silhouette.StrategyMinTraveling
-import silhouette.read_dump
-from silhouette.Geometry import dist_sq, XY_a
+from cutcutgo.Cutcutgo import CricutMaker
+from cutcutgo.Strategy import MatFree
+from cutcutgo.convert2dashes import convert2dash
+import cutcutgo.StrategyMinTraveling
+import cutcutgo.read_dump
+from cutcutgo.Geometry import dist_sq, XY_a
 
 # Temporary Monkey Backport Patches to support functions that exist only after v1.2
 # TODO: If support for Inkscape v1.1 is dropped then this backport can be removed
@@ -193,7 +191,7 @@ class SendtoCricut(EffectExtension):
         pars.add_argument("-m", "--media", "--media-id", "--media_id",
                 dest = "media", default = "1",
                 choices=[ str(i) for i in range(1, 11)],
-                help="113 = pen, 132 = printer paper, 300 = custom")
+                help="1 = Laser Copy Paper, 11 = dunno")
         pars.add_argument("-o", "--overcut",
                 dest = "overcut", type = float, default = 0.5,
                 help="overcut on circular paths. [mm]")
@@ -745,11 +743,11 @@ class SendtoCricut(EffectExtension):
             mf.verbose = 0    # inkscape crashes whenever something appears in stdout.
             self.paths = mf.apply(self.paths)
         elif self.options.strategy == "mintravel":
-            self.paths = silhouette.StrategyMinTraveling.sort(self.paths)
+            self.paths = cutcutgo.StrategyMinTraveling.sort(self.paths)
         elif self.options.strategy == "mintravelfull":
-            self.paths = silhouette.StrategyMinTraveling.sort(self.paths, entrycircular=True)
+            self.paths = cutcutgo.StrategyMinTraveling.sort(self.paths, entrycircular=True)
         elif self.options.strategy == "mintravelfwd":
-            self.paths = silhouette.StrategyMinTraveling.sort(self.paths, entrycircular=True, reversible=False)
+            self.paths = cutcutgo.StrategyMinTraveling.sort(self.paths, entrycircular=True, reversible=False)
 
         # Fuse paths
         if self.paths and self.options.fuse_paths:
@@ -783,7 +781,7 @@ class SendtoCricut(EffectExtension):
             extraText = None
             if self.options.regmark:
                 extraText = f"Registration mark to origin distance: Left={self.reg_origin_X}mm, Top={self.reg_origin_Y}mm;\n Registration mark to mark distance: X={self.reg_width}mm, Y={self.reg_length}mm;"
-            if silhouette.read_dump.show_plotcuts(cut, buttons=True, extraText=extraText) > 0:
+            if cutcutgo.read_dump.show_plotcuts(cut, buttons=True, extraText=extraText) > 0:
                 self.report("Preview aborted.", 'log')
                 return
 

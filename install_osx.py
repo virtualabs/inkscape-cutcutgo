@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Makes installing inkscape_silhouette easier on OSX
+Makes installing inkscape_cutcutgo easier on OSX
 
 This installer adds the extension to the user's local Inkscape extensions rather
 than inside the Inkscape.app bundle. This should, in theory, allow it to survive
@@ -15,14 +15,12 @@ logger = logging.getLogger(__name__)
 
 prerequisites = ["cssselect", "xmltodict", "lxml", "pyusb", "libusb1", "numpy"]
 extensions_dir = os.path.join(os.path.expanduser("~"), "Library","Application Support","org.inkscape.Inkscape","config","inkscape","extensions")
-extension_files = ["sendto_silhouette.inx", "sendto_silhouette.py",
-                   "silhouette_multi.inx",  "silhouette_multi.py",
-                   "silhouette"]
+extension_files = ["sendto_cricut.inx", "sendto_cricut.py", "cutcutgo"]
 
 
-def install_inkscape_silhouette():
+def install_inkscape_cutcutgo():
     try:
-        logger.info("inkscape_silhouette install starting")
+        logger.info("inkscape_cutcutgo install starting")
 
         # make sure this is os x
         logger.debug("making sure running on Mac OS")
@@ -39,14 +37,14 @@ def install_inkscape_silhouette():
         install_prerequisites()
         install_extension()
         check_libusb()
-        logger.info("inkscape_silhouette extension install ended")
+        logger.info("inkscape_cutcutgo extension install ended")
         logger.info("Don't forget to add 'python-interpreter=\"%s\"' to your extension preference file.", subprocess.check_output(["which", "python3"]).decode("utf-8").replace("\n", ""))
     except Exception as ex:
-        logger.warning("inkscape_silhouette install was unsuccessful. Please check previous messages for the cause. Details: %s", ex)
+        logger.warning("inkscape_cutcutgo install was unsuccessful. Please check previous messages for the cause. Details: %s", ex)
 
 
 def install_prerequisites():
-    logger.info("installing inkscape_silhouette prerequisites")
+    logger.info("installing inkscape_cutcutgo prerequisites")
     for prerequisite in prerequisites:
         logger.debug("installing %s", prerequisite)
         try:
@@ -117,4 +115,4 @@ if __name__ == "__main__":
     logger.addHandler(log_console)
 
     # run installer
-    install_inkscape_silhouette()
+    install_inkscape_cutcutgo()

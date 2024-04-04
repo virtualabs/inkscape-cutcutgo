@@ -12,9 +12,11 @@
         <option value="pen">Pen</option>
         <option value="blade">Fine-point Blade</option>
         <!--
-        <option value="blade">Deep-point Blade (unsupported !)</option>
+        <option value="scoring_stylus">Scoring Stylus (unsupported !)</option>
+        <option value="blade">Scoring Wheel (unsupported !)</option>
+        <option value="blade">Fine Deboss Tip (unsupported !)</option>
+        <option value="blade">Basic Perf Blade (unsupported !)</option>
         <option value="blade">Wavy Blade (unsupported !)</option>
-        <option value="blade">Perforation Blade (unsupported !)</option>
         <option value="blade">Rotary Blade (unsupported !)</option>
         <option value="blade">Engraving Tip (unsupported !)</option>
         <option value="blade">Debossing Tip (unsupported !)</option>
@@ -24,16 +26,19 @@
       <label indent="2">'pen' executes the strokes exactly as sent, 'cut' adds small serifs to help the knive find its orientation at corners.</label>
       <!-- CAUTION: keep media list in sync with silhouette/Graphtec.py -->
       <param name="media" type="optiongroup" appearance="combo" gui-text="Media">
-        <option value="1">Smart Vinyl</option>
-        <option value="2">Smart Iron-On</option>
-        <option value="3">Smart Paper sticker</option>
-        <option value="4">Smart Label Writable Vinyl</option>
-        <option value="5">Printable Vinyl</option>
-        <option value="6">Cardstock</option>
-        <option value="7">Infusible Ink Transfer Sheet</option>
-        <option value="8">Aluminium Sheet</option>
-        <option value="9">Acetate Sheet</option>
-        <option value="10">Window Cling</option>
+        <option value="1">Laser Copy Paper</option>
+        <!--
+        <option value="2">Smart Vinyl</option>
+        <option value="3">Smart Iron-On</option>
+        <option value="4">Smart Paper sticker</option>
+        <option value="5">Smart Label Writable Vinyl</option>
+        <option value="6">Printable Vinyl</option>
+        <option value="7">Cardstock</option>
+        <option value="8">Infusible Ink Transfer Sheet</option>
+        <option value="9">Aluminium Sheet</option>
+        <option value="10">Acetate Sheet</option>
+        <option value="11">Window Cling</option>
+        -->
       </param>
       <!--
       <param name="speed" type="int" min="0" max="30" gui-text="Speed">0</param>

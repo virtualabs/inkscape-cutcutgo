@@ -3,7 +3,7 @@
 
 name=$1
 vers=$2
-url=http://github.com/fablabnbg/$name
+url=http://github.com/virtualabs/$name
 # versioned dependencies need \ escapes to survive checkinstall mangling.
 # requires="python3-usb\ \(\>=1.0.0\), bash"
 
@@ -20,8 +20,8 @@ cd files
 fakeroot checkinstall --fstrans --reset-uid --type debian \
   --install=no -y --pkgname $name --pkgversion $vers --arch all \
   --pkglicense LGPL --pkggroup other --pakdir ../$tmp --pkgsource $url \
-  --pkgaltsource "http://fablab-nuernberg.de" \
-  --maintainer "'Juergen Weigert (juewei@fabmail.org)'" \
+  --pkgaltsource "https://virtualabs.github.io/cutcutgo/" \
+  --maintainer "'Damien Cauquil (virtualabs@gmail.com)'" \
   --requires "$requires" make install \
   -e PREFIX=/usr || { echo "fakeroot checkinstall error "; exit 1; }
 

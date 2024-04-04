@@ -35,7 +35,7 @@ import copy     # deepcopy
 import math     # sqrt
 import sys      # maxsize
 
-from silhouette.Geometry import *
+from cutcutgo.Geometry import *
 
 
 presets = {

@@ -7,9 +7,9 @@ from wx.lib.embeddedimage import PyEmbeddedImage
 import xmltodict
 from collections import OrderedDict
 
-from silhouette.ColorSeparation import ColorSeparation
+from cutcutgo.ColorSeparation import ColorSeparation
 
-from silhouette.Dialog import Dialog
+from cutcutgo.Dialog import Dialog
 
 small_up_arrow = PyEmbeddedImage(
     "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYA"
