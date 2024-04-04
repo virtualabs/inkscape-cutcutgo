@@ -20,6 +20,7 @@ MEDIA = {
   1: {
     "name": "Laser Copy Paper",
     "pressure": 8.5,
+    "clearance": 2.0
   }
 }
 
@@ -92,6 +93,7 @@ class CricutMaker:
     dev = None
     self.margins_printed = None
     self.pressure = 8.5
+    self.clearance = 1.0
 
     if self.dry_run:
       print("Dry run specified; no commands will be sent to cutter.",
@@ -265,7 +267,7 @@ class CricutMaker:
       return [b"G01X%fY%fF10" % (mmx, mmy)]
     else:
       self.tool_up = True
-      return [b"G01Z0F10", b"G01X%fY%fF10" % (mmx, mmy)]
+      return [b"G01Z-%fF10" % (self.pressure - self.clearance), b"G01X%fY%fF10" % (mmx, mmy)]
 
   def draw_mm_cmd(self, mmy, mmx):
     """ Lower tool (if not lowered) and cut """
@@ -468,6 +470,11 @@ class CricutMaker:
         self.draw_mm_cmd(bbox['lly'], bbox['llx']),
         self.draw_mm_cmd(bbox['ury'], bbox['llx'])]
 
+    # Move tool near the media
+    self.send_receive_command([
+      b"G01Z-%fF10" % (self.pressure - self.clearance)
+    ])    
+
     # potentially long command string needs extra care
     self.send_receive_command(cmd_list)
 
@@ -639,7 +646,9 @@ class CricutMaker:
         if media in MEDIA:
             selected_media = MEDIA[media]
             print("Media=%d, name='%s'" % (media, selected_media['name']), file=self.log)
-            if pressure is None: self.pressure = selected_media['pressure']
+            if pressure is None:
+              self.pressure = selected_media['pressure']
+              self.clearance = selected_media['clearance']
 
     # Select the right toolholder
     self.send_receive_command([b'T%d' % toolholder, b'$H'])
